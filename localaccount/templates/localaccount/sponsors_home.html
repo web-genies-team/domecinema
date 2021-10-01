@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n static wagtailcore_tags %}
+
+
+{% block content %}
+
+
+<h1>Projects Sponsors</h1>
+<p>
+    Be a project sponsor. Help a filmmaker realize the movie project, be part
+     of the adventure
+</p>
+<p>
+   If you have already signed up, please search projects proposals to found out
+   which one to fund. If not please create a sponsor account.
+</p>
+<!--<p>
+    If you are just an independent cineaste, please fell free to browse projects
+    and projects producers. You may find one interesting, you may send a message
+    if you wish to apply for an open position.
+</p>-->
+<p>
+    <a>Please sign in to your account</a> or <a href="{% url 'localaccount:create_project_sponsor' %}">create an account</a> to
+    start searching
+</p>
+{% if page %}
+    {{ page.title }}
+{% endif %}
+{% endblock %}

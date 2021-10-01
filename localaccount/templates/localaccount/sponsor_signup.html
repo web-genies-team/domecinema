@@ -1,0 +1,86 @@
+{% extends "localcore/base_form.html" %}
+{% load bootstrap4 %}
+
+{% block main %}
+   <!--<h1>Cr&eacute;ez votre compte Sponsor de Projet</h1>-->
+   <h3 style="text-align:center;">Project Sponsor Account</h3>
+   <br><br>
+   <!--<p>Veuillez remplir le formulaire suivant</p>-->
+   <p>Please fill-up the form bellow to create your account</p>
+   <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+   {% csrf_token %}
+   {% if sponsor_form.errors %}
+       {% for field in sponsor_form %}
+           {% for error in field.errors %}
+               <div class="alert alert-danger">
+                   <strong>{{ error|escape }}</strong>
+               </div>
+           {% endfor %}
+       {% endfor %}
+       {% for error in sponsor_form.non_field_errors %}
+           <div class="alert alert-danger">
+               <strong>{{ error|escape }}</strong>
+           </div>
+       {% endfor %}
+   {% endif %}
+       <fieldset>
+            <p>
+                <span class="required-fields-warning">
+                    N.B. Les champs avec astérisque sont obligatoires
+               </span>
+            </p>
+            <legend>This account address</legend>
+            <div class="formLayout">
+                {% bootstrap_field sponsor_form.localization layout="horizontal" %}
+                <div id="other_address">
+                    {% bootstrap_field sponsor_form.country_origin layout="horizontal" %}
+                    {% bootstrap_field sponsor_form.city_origin layout="horizontal" %}
+                </div>
+                 <div id="cd_address">
+                    {% bootstrap_field sponsor_form.province layout="horizontal" %}
+                    {% bootstrap_field sponsor_form.city layout="horizontal" %}
+                    {% bootstrap_field sponsor_form.commune layout="horizontal" %}
+                 </div>
+                 {% bootstrap_field sponsor_form.street layout="horizontal" %}
+            </div>
+       </fieldset>
+       <fieldset>
+           <legend>Your Profile</legend>
+           <div class="formLayout">
+               {% bootstrap_field sponsor_form.first_name layout="horizontal" %}
+               {% bootstrap_field sponsor_form.last_name layout="horizontal" %}
+               {% bootstrap_field sponsor_form.middle_name layout="horizontal" %}
+               {% bootstrap_field sponsor_form.username layout="horizontal" %}
+               {% bootstrap_field sponsor_form.email layout="horizontal" %}
+               {% bootstrap_field sponsor_form.sponsor_type layout="horizontal" %}
+               {% bootstrap_field sponsor_form.company_name layout="horizontal" %}
+               {% bootstrap_field sponsor_form.phone_number_1 layout="horizontal" %}
+               {% bootstrap_field sponsor_form.phone_number_2 layout="horizontal" %}
+               {% bootstrap_field sponsor_form.password1 layout="horizontal" %}
+               {% bootstrap_field sponsor_form.password2 layout="horizontal" %}
+           </div>
+       </fieldset>
+       <p><input type="submit" name="submit" class="btn btn-primary" value="Creez le compte"></p>
+   </form>
+
+
+{% endblock %}
+
+{% block domready %}
+$("#cd_address").hide();
+
+$("input:radio[name=localization]").click(function() {
+    var localization = $(this).val();
+    console.log(localization);
+
+    if ("1" == localization) {
+        $("#other_address").hide();
+        $("#cd_address").show();
+    }
+    else if ("2" == localization) {
+        $("#other_address").show();
+        $("#cd_address").hide();
+    }
+});
+
+{% endblock %}

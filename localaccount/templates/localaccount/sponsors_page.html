@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n static wagtailcore_tags %}
+
+
+{% block content %}
+{% if page %}
+    {{ page.title }}
+{% endif %}
+
+<h1>Sponsor Page</h1>
+
+<p>
+   I am a project sponsor
+</p>
+
+{% endblock %}

@@ -1,4 +1,9 @@
 {% load static wagtailuserbar %}
+{% load bootstrap4 %}
+{% if 'use_i18n'|bootstrap_setting %}
+    {% load i18n %}
+    {% get_current_language as LANGUAGE_CODE %}
+{% endif %}
 
 <!DOCTYPE html>
 <html class="no-js" lang="en">
@@ -32,8 +37,18 @@
         <link href="{% static 'assets/vendor/venobox/venobox.css' %}" rel="stylesheet">
         <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet">
 
-  <!-- Template Main CSS File -->
-  <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+        <!-- Template Main CSS File -->
+        <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+
+        <!-- Bootstrap CSS -->
+        {% bootstrap_css %}
+
+        <!-- Bootstrap JavaScript if it is in head -->
+        {% if 'javascript_in_head'|bootstrap_setting %}
+            {% bootstrap_javascript %}
+        {% endif %}
+
+        {% block bootstrap4_extra_head %}{% endblock %}
 
         {% block extra_css %}
             {# Override this in templates to add extra stylesheets #}
@@ -63,15 +78,11 @@
         <!-- ======= Header ======= -->
         <header id="header" class="fixed-top">
             <div class="container d-flex align-items-center">
-
-                <!--<h1 class="logo mr-auto"><a href="index.html">BizLand<span>.</span></a></h1>-->
-                <!-- Uncomment below if you prefer to use an image logo -->
                 <a href="index.html" class="logo mr-auto"><img src="{% static 'assets/img/logo.png' %}" alt=""></a>
-
                 {% include 'navbar.html' %}
             </div>
         </header><!-- End Header -->
-
+        <br><br><br><br><br><br>
         <div class="container">
             <div class="row">
                 <div class="col-md-9">
@@ -104,9 +115,32 @@
             <script src="{% static 'assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
             <script src="{% static 'assets/vendor/venobox/venobox.min.js' %}"></script>
             <script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
+            <script src="{% static 'assets/vendor/js.cookie/js.cookie.min.mjs' %}" type="module"></script>
+            <script nomodule defer src="{% static 'assets/vendor/js.cookie/js.cookie.js' %}"></script>
 
             <!-- Template Main JS File -->
             <script src="{% static 'assets/js/main.js' %}"></script>
+            <!-->
+            <script type="module">
+                import Cookies from "{% static 'assets/vendor/js.cookie/js.cookie.min.mjs' %}"
+
+                var csrftoken = Cookies.get("csrftoken");
+                function csrfSafeMethod(method){
+                    // These methods do not require CSRF protection
+                    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+                }
+                $.ajaxSetup({
+                    beforeSend: function(xhr, settings) {
+                        if (!csrfSafeMethod(settings.type) && !this.crossDomain){
+                            xhr.setRequestHeader("X-CSRFToken", csrftoken, { sameSite: None, secure: true });
+                        }
+                    }
+                });
+                $(document).ready(function(){
+                    {% block domready %}
+                    {% endblock %}
+                });
+            </script>
 
         {% endblock %}
     </body>

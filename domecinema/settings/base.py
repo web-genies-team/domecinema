@@ -26,6 +26,11 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 INSTALLED_APPS = [
     'home',
     'search',
+    'localcore',
+    'localaccount',
+    'domeproject',
+
+    'phonenumber_field',
 
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',
@@ -41,6 +46,8 @@ INSTALLED_APPS = [
 
     'modelcluster',
     'taggit',
+    'treebeard',
+    'bootstrap4',
 
     'django.contrib.admin',
     'django.contrib.auth',

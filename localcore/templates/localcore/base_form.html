@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+
+{% block meta_title %}{{ title }}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+{% block body_id %}account{% endblock %}
+
+{% block content %}
+<div class="col-md-{% block main_col_size %}12{% endblock %} {% block main_class %}middle{% endblock %}">
+    {% block main %}
+        <form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
+            <fieldset>
+                <legend>{{ title }}</legend>
+                {% bootstrap_form form %}
+                <div class="form-actions">
+                    {% block account_form_actions %}
+                        <input class="btn btn-primary btn-lg pull-right" type="submit" value="{{ title }}">
+                    {% endblock %}
+                </div>
+            </fieldset>
+        </form>
+    {% endblock %}
+</div>
+
+{% endblock %}
