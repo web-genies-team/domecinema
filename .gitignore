@@ -2,3 +2,7 @@
 Dockerfile
 domecinema.nja
 migrations/
+*.pyc
+*.pyo
+*.db
+
