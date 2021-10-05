@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from home.models import HomePage
+#from home.models import HomePage
 import sys
 import traceback
 
@@ -9,6 +9,7 @@ class ModelsQueries:
     def get_home_page_url(self):
         url = ""
 
+        """
         try:
             page = HomePage.objects.get(slug='home')
         except Exception:
@@ -21,4 +22,5 @@ class ModelsQueries:
                 url = page.get_url()
             except Exception:
                 pass
+        """
         return url
