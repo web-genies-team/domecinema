@@ -7,7 +7,7 @@ import traceback
 
 
 try:
-    DEFAULT_COUNTRY = Country.objects.get(code="DRC")
+    DEFAULT_COUNTRY = [] #Country.objects.get(code="DRC")
 except Exception:
     exc_type, exc_value, exc_traceback = sys.exc_info()
     traceback.print_exception(exc_type, exc_value, exc_traceback)
