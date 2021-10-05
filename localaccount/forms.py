@@ -11,7 +11,7 @@ from localcore.queries_utils import ModelsQueries as CoreQueries
 
 
 User = get_user_model()
-WORLD_COUNTRY_CHOICES = [] #CoreQueries.get_countries_for_choices()
+WORLD_COUNTRY_CHOICES = CoreQueries.get_countries_for_choices()
 
 
 class ChoiceFieldCustomValidation(forms.ChoiceField):

@@ -238,7 +238,7 @@ class SponsorPage(AbstractTimeStampedModel):
         verbose_name = "Sponsor Page"
         verbose_name_plural = "Sponsors Pages"
 
-"""
+
 class SponsorHomePage(Page):
 
     template = "localaccount/sponsors_home.html"
@@ -257,7 +257,7 @@ class SponsorHomePage(Page):
 
         #context['sponsors_pages'] = sponsors_pages
         return context
-"""
+
 
 def get_sponsors_home_page():
     try:
