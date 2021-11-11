@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 from domeproject.models import SponsorPage, get_site_root_page
+
+from wagtail.core.models import Page
+
 from django.utils.text import slugify
 
 import sys
@@ -47,3 +50,28 @@ class ModelsQueries:
                 exc_type, exc_value, exc_traceback = sys.exc_info()
                 traceback.print_exception(exc_type, exc_value, exc_traceback)
         return sponsor_home
+
+    @staticmethod
+    def get_wagtail_page_from_slug(slug=""):
+        page = None
+        if slug:
+            try:
+                page = Page.objects.get(slug=slug)
+            except Exception:
+                exc_type, exc_value, exc_traceback = sys.exc_info()
+                traceback.print_exception(exc_type, exc_value, exc_traceback)
+        return page
+
+    @staticmethod
+    def get_page_slug_from_sponsor(sponsor=None):
+        sponsor_page = None
+        if sponsor:
+            try:
+                sponsor_page = list(sponsor.page_project_sponsors.all())[0]
+            except Exception:
+                pass
+        page_slug = ""
+        if sponsor_page:
+            if sponsor_page.set_page_slug():
+                page_slug = sponsor_page.slug
+        return page_slug

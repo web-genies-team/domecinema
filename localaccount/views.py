@@ -1,4 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.template.response import TemplateResponse
+from django.urls import reverse
 from django.views import View
 from django.utils.translation import ugettext, ugettext_lazy as _
 from django.contrib.messages import info, error
@@ -6,6 +8,7 @@ from django.contrib.messages import info, error
 from .forms import SponsorProfileForm
 from .utils import NewAccountProcessingFactory
 from domeproject.models import get_sponsors_home_page
+from domeproject.queries_utils import ModelsQueries as ProjectQueries
 
 
 class SponsorFormView(View):
@@ -97,13 +100,18 @@ class CreateSponsorFormView(SponsorFormView):
                 sponsor_id = sponsor.id
             except Exception:
                 pass
+            sponsor_page_slug = ProjectQueries.get_page_slug_from_sponsor(
+                                                                sponsor=sponsor)
             if sponsor_id:
                 info(request, _(result.get("message")))
             else:
                 error(request, _(result.get("message")))
-        sponsor_form = self.form_class()
-        return render(request, self.template_name,
-                                        {"sponsor_form": sponsor_form})
+        if sponsor_page_slug:
+            redirect_url = reverse("localaccount:projet-investor-page",
+                                    kwargs={"slug": sponsor_page_slug})
+        else:
+            redirect_url = reverse("localaccount:project_sponsor_home")
+        return redirect(redirect_url)
 
 
 class ProjectSponsorHome(View):
@@ -112,3 +120,27 @@ class ProjectSponsorHome(View):
     def get(self, request, *args, **kwargs):
         sponsors_home = get_sponsors_home_page()
         return render(request, self.template_name, {"page": sponsors_home})
+
+
+class ProjectSponsorPage(View):
+    template_name = "localaccount/sponsors_page.html"
+
+    def get(self, request, slug=""):
+        waig_page = ProjectQueries.get_wagtail_page_from_slug(slug=slug)
+        sponsor_page = None
+        if waig_page:
+            try:
+                sponsor_page = waig_page.sponsorpage_page
+            except Exception:
+                pass
+        context = {"waig_page": waig_page, "sponsor_page": sponsor_page}
+        templates = [self.template_name, ]
+        return TemplateResponse(request, templates, context)
+
+
+def load_countries(request):
+    # Getting regions for the default country
+    regions = CoreModelsQueries.get_regions_of_country()
+    if not regions:
+        regions = {"id": ""}
+    return JsonResponse(regions, safe=False)
